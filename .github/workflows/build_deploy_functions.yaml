@@ -66,14 +66,28 @@ jobs:
       #     slot-name: 'production'
       #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
       #     package: .
-      - name: Azure Functions Action
-        uses: Azure/functions-action@v1.3.2
+      # - name: Azure Functions Action
+      #   uses: Azure/functions-action@v1.3.2
+      #   with:
+      #     # Name of the Azure Function App
+      #     app-name: az-products-orchestrator
+      #     # Path to package or folder. *.zip or a folder to deploy
+      #     package: .
+      #     # Publish profile (*.publishsettings) file contents with web deploy secrets
+      #     publish-profile: ${{secrets.AzureAppService_PublishProfile_Product_Orchestrator}}
+      #     # Remove unwanted files defined in .funcignore file (default: 'false'). When this is set to 'true', 'package' should point to the folder of host.json.
+      #     respect-funcignore: true
+      - name: deploy function
+        uses: Azure/functions-action@v1.4.6
         with:
           # Name of the Azure Function App
-          app-name: az-products-orchestrator
-          # Path to package or folder. *.zip or a folder to deploy
-          package: .
+          app-name: 'az-products-orchestrator'
+          slot-name: 'production'
           # Publish profile (*.publishsettings) file contents with web deploy secrets
           publish-profile: ${{secrets.AzureAppService_PublishProfile_Product_Orchestrator}}
           # Remove unwanted files defined in .funcignore file (default: 'false'). When this is set to 'true', 'package' should point to the folder of host.json.
           respect-funcignore: true
+          # Enable build action from Kudu when the package is deployed onto the function app. This will temporarily change the SCM_DO_BUILD_DURING_DEPLOYMENT setting for this deployment. To bypass this and use the existing settings from your function app, please set this to an empty string ''. To enable remote build for your project, please set this and 'enable-oryx-build' both to 'true'. By default, GitHub Action respects the packages resolved in GitHub workflow, disabling the redundant build action from Kudu endpoint. (default: 'false').
+          scm-do-build-during-deployment: true
+          # Use Oryx Build from Kudu when the package is deployed onto the function app. (Linux functions only). This will temporarily change the ENABLE_ORYX_BUILD setting from this deployment. To bypass this and use the existing settings from your function app, please set this to an empty string ''. To enable remote build for your project, please set this and 'scm-do-build-during-deployment' both to 'true'. By default, GitHub Action respects the packages resolved in GitHub workflow, disabling the redundant build action from Kudu endpoint. (default: 'false').
+          # enable-oryx-build: # optional, default is false
