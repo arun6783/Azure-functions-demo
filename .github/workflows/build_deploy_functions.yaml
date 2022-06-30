@@ -6,7 +6,10 @@ on:
       - main
     paths:
       - 'productorchestrator/**'
-  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: productorchestrator
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
