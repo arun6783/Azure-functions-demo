@@ -28,6 +28,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: 'print contents '
+        run: |
+          Get-ChildItem $pwd
+          Get-ChildItem {{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          Get-ChildItem './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+
       - name: 'Resolve Project Dependencies Using Npm'
         shell: bash
         run: |
