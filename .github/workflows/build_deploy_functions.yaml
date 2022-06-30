@@ -31,14 +31,12 @@ jobs:
       - name: 'print contents '
         shell: bash
         run: |
-          ls -lrt '{{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          ls -lrt './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           ls -lrt .
 
       - name: 'Resolve Project Dependencies Using Npm'
         shell: bash
         run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          pushd '.'
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -50,5 +48,5 @@ jobs:
         with:
           app-name: 'az-products-orchestrator'
           slot-name: 'production'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          package: .
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
