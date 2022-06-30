@@ -65,4 +65,4 @@ jobs:
           app-name: 'az-products-orchestrator'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
-          package: backend.zip
+          package: .\backend.zip
