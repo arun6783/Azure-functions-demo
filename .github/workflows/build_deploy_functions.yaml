@@ -50,19 +50,30 @@ jobs:
       #     slot-name: 'production'
       #     package: .
       #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
-      - name: 'Create ZIP'
-        run: |
-          Get-ChildItem . | Compress-Archive -Destination .\backend.zip
-        shell: pwsh
-      - name: 'print contents post zip'
-        shell: bash
-        run: |
-          ls -lrt .
+      # - name: 'Create ZIP'
+      #   run: |
+      #     Get-ChildItem . | Compress-Archive -Destination .\backend.zip
+      #   shell: pwsh
+      # - name: 'print contents post zip'
+      #   shell: bash
+      #   run: |
+      #     ls -lrt .
 
-      - name: 'Deploy the ZIP to the app'
-        uses: azure/webapps-deploy@v2
+      # - name: 'Deploy the ZIP to the app'
+      #   uses: azure/webapps-deploy@v2
+      #   with:
+      #     app-name: 'az-products-orchestrator'
+      #     slot-name: 'production'
+      #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
+      #     package: .
+      - name: Azure Functions Action
+        uses: Azure/functions-action@v1.3.2
         with:
-          app-name: 'az-products-orchestrator'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
+          # Name of the Azure Function App
+          app-name: az-products-orchestrator
+          # Path to package or folder. *.zip or a folder to deploy
           package: .
+          # Publish profile (*.publishsettings) file contents with web deploy secrets
+          publish-profile: ${{secrets.AzureAppService_PublishProfile_Product_Orchestrator}}
+          # Remove unwanted files defined in .funcignore file (default: 'false'). When this is set to 'true', 'package' should point to the folder of host.json.
+          respect-funcignore: true
