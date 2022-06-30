@@ -54,6 +54,10 @@ jobs:
         run: |
           Get-ChildItem . | Compress-Archive -Destination .\backend.zip
         shell: pwsh
+      - name: 'print contents post zip'
+        shell: bash
+        run: |
+          ls -lrt .
 
       - name: 'Deploy the ZIP to the app'
         uses: azure/webapps-deploy@v2
