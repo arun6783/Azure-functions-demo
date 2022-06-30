@@ -24,16 +24,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: 'Install and build'
-        run: |
-          npm install
-          # npm run build
-          # npm prune --production
-
       - name: 'display all files'
         run: |
           Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         shell: pwsh
+
+      - name: 'Install and build'
+        run: |
+          #npm install
+          # npm run build
+          # npm prune --production
 
       - name: 'Create ZIP'
         run: |
