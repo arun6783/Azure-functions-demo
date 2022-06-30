@@ -31,8 +31,9 @@ jobs:
       - name: 'print contents '
         shell: bash
         run: |
-          ls -lrt {{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          ls -lrt ./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          ls -lrt '{{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          ls -lrt './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          ls -lrt .
 
       - name: 'Resolve Project Dependencies Using Npm'
         shell: bash
