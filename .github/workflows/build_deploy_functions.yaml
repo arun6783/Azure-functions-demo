@@ -27,21 +27,21 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: 'Resolve Project Dependencies Using Npm'
-        shell: bash
+      - name: 'Install and build'
         run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          npm install
-          ls
-          # npm run build --if-present
-          # npm run test --if-present
-          popd
+          npm ci
+          # npm run build
+          # npm prune --production
 
-      - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
-        id: fa
+      - name: 'Create ZIP'
+        run: |
+          Get-ChildItem $pwd | Compress-Archive -Destination .\backend.zip
+        shell: pwsh
+
+      - name: 'Deploy the ZIP to the app'
+        uses: azure/webapps-deploy@v2
         with:
           app-name: 'az-products-orchestrator'
           slot-name: 'production'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
+          package: ./backend.zip
