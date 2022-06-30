@@ -7,9 +7,6 @@ on:
     paths:
       - 'productorchestrator/**'
   workflow_dispatch:
-defaults:
-  run:
-    working-directory: productorchestrator
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
@@ -33,9 +30,14 @@ jobs:
           # npm run build
           # npm prune --production
 
+      - name: 'display all files'
+        run: |
+          Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        shell: pwsh
+
       - name: 'Create ZIP'
         run: |
-          Get-ChildItem $pwd | Compress-Archive -Destination .\backend.zip
+          Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }} | Compress-Archive -Destination .\backend.zip
         shell: pwsh
 
       - name: 'Deploy the ZIP to the app'
