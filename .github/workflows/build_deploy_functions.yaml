@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'productorchestrator/**'
+  workflow_dispatch:
 
 defaults:
   run:
@@ -20,38 +21,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Setup Node ${{ env.NODE_VERSION }} Environment
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: 'display all files'
+      - name: 'Resolve Project Dependencies Using Npm'
+        shell: bash
         run: |
-          Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        shell: pwsh
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+          popd
 
-      - name: 'Install and build'
-        run: |
-          #npm install
-          # npm run build
-          # npm prune --production
-
-      - name: 'Create ZIP'
-        run: |
-          Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }} | Compress-Archive -Destination .\backend.zip
-        shell: pwsh
-
-      - name: 'display all files after zip'
-        run: |
-          Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        shell: pwsh
-
-      - name: 'Deploy the ZIP to the app'
-        uses: azure/webapps-deploy@v2
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
         with:
           app-name: 'az-products-orchestrator'
           slot-name: 'production'
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
-          package: ./backend.zip
