@@ -40,6 +40,11 @@ jobs:
           Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }} | Compress-Archive -Destination .\backend.zip
         shell: pwsh
 
+      - name: 'display all files after zip'
+        run: |
+          Get-ChildItem ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        shell: pwsh
+
       - name: 'Deploy the ZIP to the app'
         uses: azure/webapps-deploy@v2
         with:
