@@ -42,49 +42,27 @@ jobs:
           npm run test --if-present
           popd
 
-      # - name: 'Run Azure Functions Action'
-      #   uses: Azure/functions-action@v1
-      #   id: fa
+      # - name: 'Az CLI login'
+      #   uses: azure/login@v1
       #   with:
-      #     app-name: 'az-products-orchestrator'
-      #     slot-name: 'production'
-      #     package: .
-      #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
-      # - name: 'Create ZIP'
-      #   run: |
-      #     Get-ChildItem . | Compress-Archive -Destination .\backend.zip
-      #   shell: pwsh
-      # - name: 'print contents post zip'
-      #   shell: bash
-      #   run: |
-      #     ls -lrt .
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # - name: 'Deploy the ZIP to the app'
-      #   uses: azure/webapps-deploy@v2
-      #   with:
-      #     app-name: 'az-products-orchestrator'
-      #     slot-name: 'production'
-      #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_Product_Orchestrator }}
-      #     package: .
-      # - name: Azure Functions Action
-      #   uses: Azure/functions-action@v1.3.2
-      #   with:
-      #     # Name of the Azure Function App
-      #     app-name: az-products-orchestrator
-      #     # Path to package or folder. *.zip or a folder to deploy
-      #     package: .
-      #     # Publish profile (*.publishsettings) file contents with web deploy secrets
-      #     publish-profile: ${{secrets.AzureAppService_PublishProfile_Product_Orchestrator}}
-      #     # Remove unwanted files defined in .funcignore file (default: 'false'). When this is set to 'true', 'package' should point to the folder of host.json.
-      #     respect-funcignore: true
+      # - name: 'Run Azure CLI commands'
+      #   run: |
+      #     az account show
+      #     az group list
+      #     pwd
+
       - name: deploy function
         uses: Azure/functions-action@v1.4.6
         with:
           # Name of the Azure Function App
-          app-name: 'az-products-orchestrator'
+          app-name: 'products-orchestrator'
           slot-name: 'production'
           # Publish profile (*.publishsettings) file contents with web deploy secrets
-          publish-profile: ${{secrets.AzureAppService_PublishProfile_Product_Orchestrator}}
+          publish-profile: ${{secrets.PUBLISH_PROFILE}}
           # Remove unwanted files defined in .funcignore file (default: 'false'). When this is set to 'true', 'package' should point to the folder of host.json.
           respect-funcignore: true
           # Enable build action from Kudu when the package is deployed onto the function app. This will temporarily change the SCM_DO_BUILD_DURING_DEPLOYMENT setting for this deployment. To bypass this and use the existing settings from your function app, please set this to an empty string ''. To enable remote build for your project, please set this and 'enable-oryx-build' both to 'true'. By default, GitHub Action respects the packages resolved in GitHub workflow, disabling the redundant build action from Kudu endpoint. (default: 'false').
