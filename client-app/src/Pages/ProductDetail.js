@@ -4,7 +4,7 @@ import { Card, Row, Image, ListGroup, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import Rating from '../components/Rating'
+// import Rating from '../components/Rating'
 import axios from 'axios'
 
 const ProductDetail = ({ match }) => {
