@@ -1,63 +1,34 @@
-const axios = require('axios').default
+const axios = require('axios')
 module.exports = async function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.')
 
   const id = req.query.id
   context.log('id is ', id)
+  context.log('product detail uri', process.env.ProductDetailUrl)
 
+  let responseData = {}
   if (id) {
     try {
-      let result = []
-
-      const datas = await Promise.all(
-        getProductDetail(id),
-        getReviews(id),
-        getStock(id)
-      )
-
+      const datas = await Promise.all([
+        axios.get(
+          `http://${process.env.ProductDetailUrl}/api/productdetail/${id}`
+        ),
+        axios.get(`http://${process.env.ReviewsUrl}/api/reviews/${id}`),
+        axios.get(`http://${process.env.StockUrl}/api/stock/${id}`),
+      ])
       datas.forEach(({ data }) => {
-        result = [...result, data]
+        Object.assign(responseData, data)
       })
     } catch (e) {
       context.log('errr', e)
     }
     context.res = {
       // status: 200, /* Defaults to 200 */
-      body: result,
+      body: responseData,
     }
   }
   context.res = {
     status: 400,
     body: 'Bad request',
-  }
-}
-
-const getProductDetail = (id) => {
-  try {
-    context.log('product detail uri', process.env.ProductDetailUrl)
-    return axios.get(
-      `http://${process.env.ProductDetailUrl}/api/productdetail/${id}`
-    )
-  } catch (e) {
-    context.log('error in get prodyct', e)
-    return null
-  }
-}
-
-const getReviews = async (id) => {
-  try {
-    return axios.get(`http://${process.env.ReviewsUrl}/api/reviews/${id}`)
-  } catch (e) {
-    context.log('error in get getReviews', e)
-    return null
-  }
-}
-
-const getStock = async (id) => {
-  try {
-    return axios.get(`http://${process.env.StockUrl}/api/stock/${id}`)
-  } catch (e) {
-    context.log('error in get getStock', e)
-    return null
   }
 }
