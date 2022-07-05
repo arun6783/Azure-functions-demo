@@ -3,7 +3,7 @@ module.exports = async function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.')
 
   const id = req.query.id
-  console.log('id is ', id)
+  context.log('id is ', id)
 
   if (id) {
     try {
@@ -19,7 +19,7 @@ module.exports = async function (context, req) {
         result = [...result, data]
       })
     } catch (e) {
-      console.log('errr', e)
+      context.log('errr', e)
     }
     context.res = {
       // status: 200, /* Defaults to 200 */
@@ -33,16 +33,31 @@ module.exports = async function (context, req) {
 }
 
 const getProductDetail = (id) => {
-  console.log('product detail uri', process.env.ProductDetailUrl)
-  return axios.get(
-    `http://${process.env.ProductDetailUrl}/api/productdetail/${id}`
-  )
+  try {
+    context.log('product detail uri', process.env.ProductDetailUrl)
+    return axios.get(
+      `http://${process.env.ProductDetailUrl}/api/productdetail/${id}`
+    )
+  } catch (e) {
+    context.log('error in get prodyct', e)
+    return null
+  }
 }
 
 const getReviews = async (id) => {
-  return axios.get(`http://${process.env.ReviewsUrl}/api/reviews/${id}`)
+  try {
+    return axios.get(`http://${process.env.ReviewsUrl}/api/reviews/${id}`)
+  } catch (e) {
+    context.log('error in get getReviews', e)
+    return null
+  }
 }
 
 const getStock = async (id) => {
-  return axios.get(`http://${process.env.StockUrl}/api/stock/${id}`)
+  try {
+    return axios.get(`http://${process.env.StockUrl}/api/stock/${id}`)
+  } catch (e) {
+    context.log('error in get getStock', e)
+    return null
+  }
 }
