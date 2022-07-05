@@ -10,11 +10,9 @@ module.exports = async function (context, req) {
   if (id) {
     try {
       const datas = await Promise.all([
-        axios.get(
-          `http://${process.env.ProductDetailUrl}/api/productdetail/${id}`
-        ),
-        axios.get(`http://${process.env.ReviewsUrl}/api/reviews/${id}`),
-        axios.get(`http://${process.env.StockUrl}/api/stock/${id}`),
+        axios.get(`${process.env.ProductDetailUrl}/api/productdetail/${id}`),
+        axios.get(`${process.env.ReviewsUrl}/api/reviews/${id}`),
+        axios.get(`${process.env.StockUrl}/api/stock/${id}`),
       ])
       datas.forEach(({ data }) => {
         Object.assign(responseData, data)
