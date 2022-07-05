@@ -20,10 +20,10 @@ module.exports = async function (context, req) {
     } catch (e) {
       context.log('errr', e)
     }
-    context.res = {
+    return (context.res = {
       // status: 200, /* Defaults to 200 */
       body: responseData,
-    }
+    })
   }
   context.res = {
     status: 400,
