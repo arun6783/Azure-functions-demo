@@ -1,0 +1,55 @@
+name: Build and deploy Node.js project to Azure Function App - az-products-orchestrator
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'client-app/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: client-app
+
+env:
+  AZURE_FUNCTION_PROJ_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '16.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  STORAGE_ACCOUNT_NAME: 'azfunctiondemoreactapp'
+  FUNCTIONS_WORKER_RUNTIME: 'node'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v2
+
+      - name: Setup Node ${{ env.NODE_VERSION }} Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 'Resolve Project Dependencies Using Npm'
+        shell: bash
+        run: |
+          pushd '.'
+          npm install
+          npm run build
+          popd
+
+      - name: 'print contents '
+        shell: bash
+        run: |
+          ls -lrt .
+
+      - name: Authenticate to Azure as a Service Principal
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDS_FUNCTION_APP }}
+
+      - name: Publish app
+        uses: Azure/cli@v1.0.0
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az storage blob upload-batch -s ./build -d '$web' --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}

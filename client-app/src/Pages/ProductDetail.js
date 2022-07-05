@@ -5,29 +5,30 @@ import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Rating from '../components/Rating'
+import axios from 'axios'
 
 const ProductDetail = ({ match }) => {
-  const loading = false
-  const error = undefined
-  const [product, setProduct] = useState({
-    id: 2,
-    name: 'DIOR Miss Dior Eau de Parfum 50ml',
-    image: '/images/DIOR_Miss_Dior.png',
-    description:
-      "The new Miss Dior eau de parfum brings in a wave of optimism and brims with life—echoing Miss Dior's very essence. Miss Dior's fresh and floral notes are composed like a bouquet of countless flowers with endless sparkling colours. François Demachy, Perfumer-Creator of the House of Dior, wanted to create an iridescent Rose for this fragrance that is lit up by a myriad of fresh and floral notes.",
-    brand: 'DIOR',
-    category: 'Parfum',
-    pricePer100: 166.0,
-    price: 83.0,
-    countInStock: 17,
-    rating: 4.5,
-    numReviews: 80,
-  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(undefined)
+  const [product, setProduct] = useState()
 
-  const getProductDetail = async (id) => {}
+  const getProductDetail = async (id) => {
+    setLoading(true)
+    setError(undefined)
+    const orchestratorUrl =
+      process.env.OrchestratorUrl ||
+      'https://product-details-orchestrator.azurewebsites.net/api/getProductDetails?code=7__IHdddVgvla6K5nVY4gvSJxFNYkjIw2jRrPxRHO99vAzFu0t_q2g=='
+    const { data } = await axios.get(`${orchestratorUrl}&id=${id}`)
+    if (data && data.name) {
+      setProduct(data)
+    } else {
+      setError('Product Not found')
+    }
+    setLoading(false)
+  }
   useEffect(() => {
     getProductDetail(match.params.id)
-  }, [])
+  }, [match.params.id])
 
   return (
     <>
@@ -52,12 +53,12 @@ const ProductDetail = ({ match }) => {
                     <h3>{product.name}</h3>
                   </ListGroup.Item>
                   <ListGroup.Item>Brand: {product.brand}</ListGroup.Item>
-                  <ListGroup.Item>
+                  {/* <ListGroup.Item>
                     <Rating
                       rating={product.rating}
                       text={`${product.numReviews} reviews`}
                     />
-                  </ListGroup.Item>
+                  </ListGroup.Item> */}
                   <ListGroup.Item>
                     Description: {product.description}
                   </ListGroup.Item>
