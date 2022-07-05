@@ -1,4 +1,4 @@
-name: Build and deploy client react app
+name: Build and deploy Nodejs app to az functions
 
 on:
   push:

@@ -4,12 +4,13 @@ const app = express()
 const port = 5000
 
 app.get('/api/productdetail/:id', (req, res) => {
-  console.log('products', products)
   const product = products.find((x) => {
     return x.id == req.params.id
   })
 
   if (product) {
+    console.log('product found', product)
+
     const { name, image, description, brand, category, pricePer100, price } =
       product
     return res

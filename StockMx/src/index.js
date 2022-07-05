@@ -10,10 +10,8 @@ app.get('/api/stock/:id', (req, res) => {
   })
 
   if (product) {
-    const count = product?.countInStock || undefined
-    if (count) {
-      return res.status(200).send({ countInStock: count })
-    }
+    const countInStock = product?.countInStock || 0
+    return res.status(200).send({ countInStock })
   }
   return res.status(400).send({ error: 'Item not found' })
 })

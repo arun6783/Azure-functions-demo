@@ -10,6 +10,8 @@ app.get('/api/reviews/:id', (req, res) => {
   })
 
   if (product) {
+    console.log('product found', product)
+
     const numReviews = product?.numReviews || undefined
     const rating = product?.rating || undefined
     if (numReviews && rating) {

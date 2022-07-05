@@ -1,4 +1,4 @@
-name: Build and deploy Node.js project to Azure Function App - az-products-orchestrator
+name: Build and deploy client react app
 
 on:
   push:
