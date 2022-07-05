@@ -15,7 +15,7 @@ defaults:
 env:
   AZURE_FUNCTION_PROJ_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '16.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
-  AZURE_FUNCTIONAPP_NAME: 'products-orchestrator'
+  AZURE_FUNCTIONAPP_NAME: 'product-details-orchestrator'
   FUNCTIONS_WORKER_RUNTIME: 'node'
 jobs:
   build-and-deploy:
@@ -52,4 +52,4 @@ jobs:
         run: npm i -g azure-functions-core-tools@3 --unsafe-perm true
 
       - name: Publish Azure Function App
-        run: func azure functionapp publish products-orchestrator
+        run: func azure functionapp publish ${{ env.AZURE_FUNCTIONAPP_NAME }}
