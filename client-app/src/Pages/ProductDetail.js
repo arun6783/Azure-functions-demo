@@ -17,7 +17,7 @@ const ProductDetail = ({ match }) => {
     setError(undefined)
     const orchestratorUrl =
       process.env.OrchestratorUrl ||
-      'https://product-details-orchestrator.azurewebsites.net/api/getProductDetails?code=7__IHdddVgvla6K5nVY4gvSJxFNYkjIw2jRrPxRHO99vAzFu0t_q2g=='
+      'https://product-details-orchestrator.azurewebsites.net/api/getProductDetails?code=DhmE4u770e4syfFHpEoykyXbttwDmoribaxqCaYgN6mFAzFuFAS7gw=='
     const { data } = await axios.get(`${orchestratorUrl}&id=${id}`)
     if (data && data.name) {
       setProduct(data)
