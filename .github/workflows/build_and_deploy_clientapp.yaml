@@ -50,4 +50,4 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch -s build -d '$web' --account-name arunfuncclientappsa
+            az storage blob upload-batch -s './build' -d '$web' --account-name arunfuncclientappsa --overwrite
