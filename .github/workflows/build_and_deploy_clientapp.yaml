@@ -15,7 +15,6 @@ defaults:
 env:
   AZURE_FUNCTION_PROJ_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '16.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
-  STORAGE_ACCOUNT_NAME: 'arunfuncclientappsa'
   FUNCTIONS_WORKER_RUNTIME: 'node'
 jobs:
   build-and-deploy:
@@ -51,4 +50,4 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch -s ./build -d '$web' --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+            az storage blob upload-batch -s ./build -d '$web' --account-name arunfuncclientappsa
