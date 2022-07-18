@@ -50,6 +50,5 @@ jobs:
       - name: Publish app
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.30.0
           inlineScript: |
             az storage blob upload-batch -s ./build -d '$web' --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }}
