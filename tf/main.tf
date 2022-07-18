@@ -43,17 +43,16 @@ resource "azurerm_function_app" "arun-func-demo-rg" {
   app_settings              = "${var.app_settings}"
 
   
+
 }
 
 
-#create storage account for static website hosting
-
 
 #Create Storage account
-resource "azurerm_storage_account" "arun-func-clientapp-sa" {
-  name                = "arunazfuncclientappsa"
-  resource_group_name      = azurerm_resource_group.arun-func-demo-rg.name
-  location                 = azurerm_resource_group.arun-func-demo-rg.location
+resource "azurerm_storage_account" "arunfuncclientappsa" {
+  name                = "arunfuncclientappsa"
+   resource_group_name      = azurerm_resource_group.arun-func-demo-rg.name
+   location                 = azurerm_resource_group.arun-func-demo-rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
   account_kind             = "StorageV2"
@@ -62,11 +61,39 @@ resource "azurerm_storage_account" "arun-func-clientapp-sa" {
     index_document = "index.html"
   }
 }
-
+ 
 #Add index.html to blob storage
-resource "azurerm_storage_blob" "example" {
+resource "azurerm_storage_blob" "arun-func-clientapp-blob" {
   name                   = "index.html"
-  storage_account_name   = azurerm_storage_account.arun-func-clientapp-sa.name
+  storage_account_name   = azurerm_storage_account.arunfuncclientappsa.name
   storage_container_name = "$web"
   type                   = "Block"
+  content_type           = "text/html"
+  source_content         = "<h1>This is static content coming from the Terraform</h1>"
 }
+
+
+# #create storage account for static website hosting
+
+
+# #Create Storage account
+# resource "azurerm_storage_account" "arun-func-clientapp-sa" {
+#   name                = "arunazfuncclientappsa"
+#   resource_group_name      = azurerm_resource_group.arun-func-demo-rg.name
+#   location                 = azurerm_resource_group.arun-func-demo-rg.location
+#   account_tier             = "Standard"
+#   account_replication_type = "LRS"
+#   account_kind             = "StorageV2"
+ 
+#   static_website {
+#     index_document = "index.html"
+#   }
+# }
+
+# #Add index.html to blob storage
+# resource "azurerm_storage_blob" "example" {
+#   name                   = "index.html"
+#   storage_account_name   = azurerm_storage_account.arun-func-clientapp-sa.name
+#   storage_container_name = "$web"
+#   type                   = "Block"
+# }
