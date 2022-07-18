@@ -15,7 +15,7 @@ defaults:
 env:
   AZURE_FUNCTION_PROJ_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '16.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
-  STORAGE_ACCOUNT_NAME: 'azfunctiondemoreactapp'
+  STORAGE_ACCOUNT_NAME: 'arunazfuncclientappsa'
   FUNCTIONS_WORKER_RUNTIME: 'node'
 jobs:
   build-and-deploy:
