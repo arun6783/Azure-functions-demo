@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockmx-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockmx
+  template:
+    metadata:
+      labels:
+        app: stockmx
+    spec:
+      containers:
+        - name: stockmx
+          image: arun6783/stockmx
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: stockmx-srv
+spec:
+  selector:
+    app: stockmx
+  ports:
+    - name: stockmx-tcp
+      port: 4000
+      targetPort: 4000

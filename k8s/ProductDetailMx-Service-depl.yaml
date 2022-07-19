@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productdetailmx-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productdetailmx
+  template:
+    metadata:
+      labels:
+        app: productdetailmx
+    spec:
+      containers:
+        - name: productdetailmx
+          image: arun6783/productdetailmx
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: productdetailmx-srv
+spec:
+  selector:
+    app: productdetailmx
+  ports:
+    - name: productdetailmx-tcp
+      port: 5000
+      targetPort: 5000

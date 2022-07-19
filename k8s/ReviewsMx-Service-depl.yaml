@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviewsmx-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviewsmx
+  template:
+    metadata:
+      labels:
+        app: reviewsmx
+    spec:
+      containers:
+        - name: reviewsmx
+          image: arun6783/reviewsmx
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: reviewsmx-srv
+spec:
+  selector:
+    app: reviewsmx
+  ports:
+    - name: reviewsmx-tcp
+      port: 4500
+      targetPort: 4500
