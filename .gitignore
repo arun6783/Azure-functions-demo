@@ -111,3 +111,7 @@ dist
 *.tfvars
 
 .vscode
+
+*tfstate*
+tf/terraform.tfstate
+tf/terraform.tfstate.backup

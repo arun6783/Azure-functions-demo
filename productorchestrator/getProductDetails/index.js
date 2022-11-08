@@ -5,7 +5,7 @@ module.exports = async function (context, req) {
   const id = req.query.id
   context.log('id is ', id)
   context.log('product detail uri', process.env.ProductDetailUrl)
-
+  
   let responseData = {}
   if (id) {
     try {
